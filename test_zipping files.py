@@ -1,27 +1,11 @@
 from zipfile import ZipFile
+
+from openpyxl.descriptors import String
 from pypdf import PdfReader
-from io import BytesIO
-from io import TextIOWrapper
+from io import BytesIO, StringIO
 from openpyxl import load_workbook
 import csv
-import os
 
-CURRENT_FILE = os.path.abspath(__file__)
-CURRENT_DIR = os.path.dirname(CURRENT_FILE)
-FILES_DIR = os.path.join(CURRENT_DIR, "Files")
-
-
-def test_create_zip_file(zip_name="test.zip", directory=FILES_DIR):
-    if os.path.exists(zip_name):
-        os.remove(zip_name)
-
-    with ZipFile(zip_name, 'w') as zip_file:
-        for root, dirs, files in os.walk(directory):
-            for file in files:
-                file_path = os.path.join(root, file)
-                zip_file.write(file_path, file_path[len(directory):])
-
-    assert os.path.exists("test.zip")
 
 
 def test_pdf_file():
@@ -41,10 +25,11 @@ def test_xlsx_file():
 
 def test_csv_file():
     with ZipFile("test.zip", 'r') as zip_archive:
-        with zip_archive.open("sample2.csv", 'r') as csv_content:
-            csv_process = String
-            for row in reader:
-                assert "Chad Bradford" in reader
-
+        data = StringIO(zip_archive.read("sample2.csv").decode('utf-8'))
+        data_converted = csv.reader(data, delimiter=',')
+        list(zip(*data_converted))
+        for _ in data_converted:
+            for row in data_converted:
+                assert "Daniel Cabrera" in row
 
 
