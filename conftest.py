@@ -1,6 +1,3 @@
-import shutil
-import time
-
 import pytest
 import os
 from zipfile import ZipFile
@@ -22,3 +19,5 @@ def test_create_zip_file(zip_name="test.zip", directory=FILES_DIR):
 
 
     assert os.path.exists("test.zip")
+    yield
+    os.remove("test.zip")

@@ -1,6 +1,4 @@
 from zipfile import ZipFile
-
-from openpyxl.descriptors import String
 from pypdf import PdfReader
 from io import BytesIO, StringIO
 from openpyxl import load_workbook
